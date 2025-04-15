@@ -36,6 +36,8 @@ DATASET_LABELS_VALIDATING_PATH = f"{PREFIX}/datasets/aider128/labels/val/"
 
 WORKING_DIR_PATH = f"{PREFIX}/pipeline/data_annotation/bounding_boxes/"
 
+# AINSI ESCAPE SEQUENCE for color and text formatting in shell interface.
+# More at https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
 BLUE_FONT = "\033[1;34m"
 YELLOW_FONT = "\033[1;33m"
 RED_FONT = "\033[1;31m"
@@ -219,10 +221,10 @@ def create_label_file(path_to_labels: str, label_filename: str):
     """Create empty .txt file that will later hold bbox coordinates"""
     try:
         img_label = open(f"{path_to_labels}{label_filename}", "x", encoding="utf-8")
-        print(f"\n{YELLOW_FONT}{label_filename} created. Proceed to append bbox...{RESET_COLOR}")
+        print(f"\n\n{YELLOW_FONT}{label_filename} created. Proceed to append bbox...{RESET_COLOR}")
 
     except FileExistsError:
-        print(f"\n{YELLOW_FONT}{label_filename} already exists. Proceed to overwrite bbox...{RESET_COLOR}")
+        print(f"\n\n{YELLOW_FONT}{label_filename} already exists. Proceed to overwrite bbox...{RESET_COLOR}")
         img_label = open(f"{path_to_labels}{label_filename}", "w", encoding="utf-8")
         img_label.write("")
         img_label.close()
@@ -306,9 +308,9 @@ def loop_over_all_file(path_to_dataset: str, path_to_labels: str, file_location:
     file_cursor = os.scandir(path_to_dataset)
 
     # trange is a loading_bar from tqdm module
-    with trange(len(num_iterations), colour="green") as tm:
+    with trange(num_iterations, colour="green") as tm:
         for i in tm:
-            tm.set_description(f"Creating Bounding Box for {file_location.capitalize()} Dataset")
+            tm.set_description(f"{BLUE_FONT}Creating Bounding Box for {file_location.capitalize()} Dataset{RESET_COLOR}")
             file = file_cursor.__next__()
             if file.is_file():
                 filename = file.name
@@ -350,7 +352,8 @@ def monitoring_gpu_usage():
             # - Write Code for GPU Utilization: Your Python code within the function would explicitly move the YOLOv8 model and input data
             # to the GPU using the framework's commands (e.g., model.to('cuda') in PyTorch).
 
-#Run (Confidence Treshold from output of Sieve/Yolov8 can be adjusted to have a more precise results)
-create_bounding_boxes("training")
 
+# RUN (Confidence Treshold from output of Sieve/Yolov8 can be adjusted to have a more precise results)
+create_bounding_boxes("training")
+create_bounding_boxes("validation")
 # monitoring_gpu_usage()
