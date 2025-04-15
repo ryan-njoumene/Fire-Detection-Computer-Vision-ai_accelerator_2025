@@ -12,7 +12,7 @@ import tempfile
 import numpy as np
 
 # Global Variables
-working_dir_path = "ai_accelerator/pipeline/data_annotation/video_segmentation/"
+working_dir_path = "Fire-Detection-Computer-Vision-ai_accelerator_2025/pipeline/data_annotation/video_segmentation/"
 blue_font = "\033[0;34m"
 reset_color = "\033[0m"
 
@@ -153,7 +153,7 @@ def zip_to_mp4(frames_zip: sieve.File):
 
 def Image_to_Segmented_Mask():
     # ex: file_path = "duckling.mp4"
-    file_path = "../ai_accelerator/datasets/aider128/images/train/fire_image0002.jpg"
+    file_path = "../Fire-Detection-Computer-Vision-ai_accelerator_2025/datasets/aider128/images/train/fire_image0002.jpg"
     # ex: text_prompt = "duckling"
     text_prompt = "fire"
 
@@ -161,7 +161,7 @@ def Image_to_Segmented_Mask():
     sam_out = segment(file, text_prompt)
 
     # os.makedirs("outputs", exist_ok=True)
-    os.chdir("ai_accelerator/datasets/aider128/masks/train/")
+    os.chdir("Fire-Detection-Computer-Vision-ai_accelerator_2025/datasets/aider128/masks/train/")
 
     # make a image/video file coresponding to the generated mask
     # ex for video: mask = zip_to_mp4(sam_out['masks'])

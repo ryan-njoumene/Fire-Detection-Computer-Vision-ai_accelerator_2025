@@ -1,7 +1,7 @@
 task: detect
 mode: train
 model: yolo11n.yaml
-data: ai_accelerator/data/aider128.yaml
+data: Fire-Detection-Computer-Vision-ai_accelerator_2025/data/aider128.yaml
 epochs: 1
 time: null
 patience: 100
@@ -102,4 +102,4 @@ erasing: 0.4
 crop_fraction: 1.0
 cfg: null
 tracker: botsort.yaml
-save_dir: C:\Users\ryann\Documents\My Projects\Coding\Python\AI_Accelerator\ai_accelerator\runs\detect\train
+save_dir: C:\Users\ryann\Documents\My Projects\Coding\Python\Fire-Detection-Computer-Vision-ai_accelerator_2025\Fire-Detection-Computer-Vision-ai_accelerator_2025\runs\detect\train

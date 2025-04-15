@@ -9,16 +9,16 @@ model = YOLO("yolo11n.yaml").load("yolo11n.pt")  # build from YAML and transfer 
 # Train the model
 # epoch of learning, nber of time it runs through all the data (affect time of learning and performance)
 # imgsz=640 means all image are rescaled to 640x640 px (ensure better processing and result by using uniform image size)
-results = model.train(data="ai_accelerator/data/aider128.yaml", epochs=1, imgsz=640)
+results = model.train(data="Fire-Detection-Computer-Vision-ai_accelerator_2025/data/aider128.yaml", epochs=1, imgsz=640)
 
 # Validate the model on a different dataset
-model.val(data="ai_accelerator/data/aider128.yaml")
+model.val(data="Fire-Detection-Computer-Vision-ai_accelerator_2025/data/aider128.yaml")
 
 # TESTING
 
 # Define the source for testing
 # This can be a single image, a directory of images, a video file, or even a webcam feed.
-source = 'ai_accelerator/datasets/aider128/images/test'
+source = 'Fire-Detection-Computer-Vision-ai_accelerator_2025/datasets/aider128/images/test'
 
 # Test the model
 results = model.predict(source=source)
@@ -32,6 +32,6 @@ for result in results:
 # Testing Visual Representation with MaPlotLib
 # from PIL import Image
 # import matplotlib.pyplot as plt
-# image = Image.open('ai_accelerator/datasets/aider128/images/train/fire_image0001.jpg')
+# image = Image.open('Fire-Detection-Computer-Vision-ai_accelerator_2025/datasets/aider128/images/train/fire_image0001.jpg')
 # plt.imshow(image)
 # plt.show()
