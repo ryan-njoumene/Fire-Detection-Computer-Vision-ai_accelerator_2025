@@ -19,14 +19,14 @@ VAL = True #default=true
 project_size = {"Nano": "n", "Large": "L"}
 bbox_Confidance_Threshold = {"None": "cfNone", "50%": "cf50"}
 augmented = {"true": "A", "false": ""}
-PROJECT = f"aider128{project_size["Nano"]}_{augmented["false"]}{bbox_Confidance_Threshold["None"]}"
+PROJECT = f"aider128{project_size["Nano"]}_{augmented["false"]}{bbox_Confidance_Threshold["50%"]}"
 
 # If True, allows overwriting of an existing project/name directory.
 # Useful for iterative experimentation without needing to manually clear previous outputs.
 EXIST_OK = False #default=false
 
 # Name of the training run. Used for creating a subdirectory within the project folder, where training logs and outputs are stored.
-experiment_numbers = 1
+experiment_numbers = 2
 NAME = f"aider128_run{experiment_numbers}"
 
 # ---------------------------------
