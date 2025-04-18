@@ -380,6 +380,7 @@ def monitoring_gpu_usage():
     print(f"Python Interpreter: {sys.executable}")
     print(f"Pytorch version: {torch.__version__}")
     print(f"CUDA version: {torch.version.cuda}")
+    print("CUDA Available:", torch.cuda.is_available())
     # command: nvidia-smi, nvcc --version
 
     if torch.cuda.is_available():

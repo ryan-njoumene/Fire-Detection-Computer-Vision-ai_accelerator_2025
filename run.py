@@ -1,15 +1,17 @@
 """Import YOLOv11 model"""
 from ultralytics import YOLO
-import comet_ml
 import torch, torchvision
-
+import comet_ml
+# pip install ultralytics
+# pip install comet_ml
+# pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
 
 # ---------------------------------
 # ---------------------------------
 
 # TRAINNING SETTINGS FOR MODEL
 from trainning_settings import DATA, VAL, PROJECT, EXIST_OK, NAME, PLOTS, PROFILE, EPOCHS, PATIENCE, BATCH_SIZE, IMGSZ, CACHE, WORKERS, SAVE, SAVE_PERIOD, OPTIMIZER, COS_LR, SINGLE_CLS, FOCUS_CLASSES
-from utilities import monitoring_gpu_usage
+from utilities import monitoring_gpu_usage, MAGENTA_FONT, RESET_COLOR
 
 # set GPU as processing Unit for Running our Model
 DEVICE = monitoring_gpu_usage()
@@ -31,8 +33,12 @@ comet_ml.login(project_name="Fire_Detection_aider128_ai_accelerator_2025")
 # model = YOLO("yolo11n.yaml").load("yolo11n.pt")  # build from YAML and transfer weights
 model = YOLO("yolo11n.pt")  # load a pretrained model (recommended for training)
 
+print(f"\n{MAGENTA_FONT}----< YOLO11n Model Informations >----{RESET_COLOR}")
+model.info()
+
 # Use GPU acceleration
-model.device(DEVICE)
+model.to(DEVICE)
+print(f"YOLO11n Model : run with {model.device}")
 
 # ---------------------------------
 # ---------------------------------
