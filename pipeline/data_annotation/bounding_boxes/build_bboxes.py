@@ -1,5 +1,5 @@
 
-# Dependancies to Import ...
+# Dependancies to INSTALL ...
 # pip install sievedata
 # sieve login
 """Import Dependancies ..."""
@@ -11,20 +11,24 @@ import sieve
 import torch
 from tqdm import trange
 
-# Global Variables
+
+# ---------------------------------
+# ---------------------------------
+
+# PATHS
 
 # this file is runned in terminal by the command `python build_bboxes.py`
 # which allow us to use CUDA GPU Acceleration from my Nvidia Card
-RUN_BY_COMMAND = True
+RUN_BY_TERMINAL_COMMAND = True
 
 # move from current working directory toward Fire-Detection-Computer-Vision-ai_accelerator_2025 directory
-PREFIX_FOR_RELATIVE_PATH = "../../../"
+PREFIX_FOR_WORKSPACE_RELATIVE_PATH = "../../.."
 # when play button on vscode is used to run the code, the current
 # working dir is set according to where the workspace was open ex: AI_ACELERATOR
-PREFIX_FOR_PROJECT_WORKSPACE_PATH = "Fire-Detection-Computer-Vision-ai_accelerator_2025"
+PREFIX_FOR_PROJECT_WORKSPACE_PATH = "."
 
-if RUN_BY_COMMAND is True:
-    PREFIX = PREFIX_FOR_RELATIVE_PATH
+if RUN_BY_TERMINAL_COMMAND is True:
+    PREFIX = PREFIX_FOR_WORKSPACE_RELATIVE_PATH
 else:
     PREFIX = PREFIX_FOR_PROJECT_WORKSPACE_PATH
 
@@ -36,13 +40,10 @@ DATASET_LABELS_VALIDATING_PATH = f"{PREFIX}/datasets/aider128/labels/val/"
 
 WORKING_DIR_PATH = f"{PREFIX}/pipeline/data_annotation/bounding_boxes/"
 
-# AINSI ESCAPE SEQUENCE for color and text formatting in shell interface.
-# More at https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
-BLUE_FONT = "\033[1;34m"
-YELLOW_FONT = "\033[1;33m"
-RED_FONT = "\033[1;31m"
-MAGENTA_FONT = "\033[1;35m"
-RESET_COLOR = "\033[0m"
+# ---------------------------------
+# ---------------------------------
+
+# CLASSES OF THE MODEL
 
 # Classes correspond to the elements you want to target and detect in your AI Model
 CLASSES_TO_DETECT = ["fire", "flame", "wildfire", "forest fire",
@@ -53,6 +54,24 @@ CLASSES_TO_DETECT = ["fire", "flame", "wildfire", "forest fire",
                      "white light",  "orange light",  "yellow light", "burning building",
                      "burning vehicle", "burning trees" ]
 
+
+# ---------------------------------
+# ---------------------------------
+
+# FONTS COLORS
+
+
+# AINSI ESCAPE SEQUENCE for color and text formatting in shell interface.
+# More at https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+BLUE_FONT = "\033[1;34m"
+YELLOW_FONT = "\033[1;33m"
+RED_FONT = "\033[1;31m"
+MAGENTA_FONT = "\033[1;35m"
+RESET_COLOR = "\033[0m"
+
+
+# ---------------------------------
+# ---------------------------------
 
 # Step 1 : Handling Video Format
 
@@ -84,6 +103,9 @@ def get_first_frame(video: sieve.File):
     cap.release()
 
     return frame
+
+# ---------------------------------
+# ---------------------------------
 
 # Step 2 : Extract Bounding Box from IMG or Frame from Video
 
@@ -151,6 +173,9 @@ metadata = sieve.Metadata(
 )
 
 
+# ---------------------------------
+# ---------------------------------
+
 # Step 3 : Segmenting IMG or Video
 
 def generate_bbox_according_to_prompt(file: sieve.File, prompts: list[str]):
@@ -199,6 +224,8 @@ def run_in_silent_mode(image: sieve.File, object_name: str):
     # return box from get_object_bbox()
     return box
 
+# ---------------------------------
+# ---------------------------------
 
 # Step 4 : Get Dimension of the IMG currently processed
 
@@ -229,8 +256,13 @@ def create_label_file(path_to_labels: str, label_filename: str):
         img_label.write("")
         img_label.close()
 
+
+# ---------------------------------
+# ---------------------------------
+
 # Step 7 : Populate .txt file with bbox coordinates corresponding
 # to elements of interests in IMG (model classes)
+
 def fill_label_file_with_bbox_coordinates(path_to_labels: str, label_filename: str, img_dimension: {int, int}, bbox_all_object: {str, int}):
     """Write bounding box coordinates inside the previously created file"""
     lines = []
@@ -246,7 +278,12 @@ def fill_label_file_with_bbox_coordinates(path_to_labels: str, label_filename: s
     img_label.writelines(lines)
     img_label.close()
 
+
+# ---------------------------------
+# ---------------------------------
+
 # Step 8 : transform the Bounding box informations in the Format used for labelling expected by Yolo
+
 def bbox_to_label_format(bbox: list[int], img_dimension: {str, int}):
     """Normalizes Coordinates (between 0-1) and Set Class_index according to labels format expected by Yolov11"""
     # FORMAT: class_index x_center y_center width height
@@ -262,8 +299,13 @@ def bbox_to_label_format(bbox: list[int], img_dimension: {str, int}):
     # return dictionary of bbox coordinates in the format expected by Yolo
     return label_format
 
+
+# ---------------------------------
+# ---------------------------------
+
 # Step 9 : Coordinate all the previous functions to detect (prompted elements),
 # generate (bbox coordinate) and write bounding boxes (in .txt file)
+
 def build_bbox_for_img(filename: str, path_to_dataset: str, path_to_labels: str):
     """Create .txt file with bounding boxes of all prompted object by processing an IMG file"""
     file_path = f"{path_to_dataset}{filename}"
@@ -281,8 +323,12 @@ def build_bbox_for_img(filename: str, path_to_dataset: str, path_to_labels: str)
     print(f"\n{MAGENTA_FONT}{label_filename} BBOXES COMPLETED!{RESET_COLOR}")
 
 
+# ---------------------------------
+# ---------------------------------
+
 
 # Main : Build Bounding Boxes .txt file for all Images of a dataset
+
 def create_bounding_boxes(file_location: str):
     """Create Bounding Boxes for all Images of a Training dataSet or Validation dataSet"""
 
@@ -317,9 +363,16 @@ def loop_over_all_file(path_to_dataset: str, path_to_labels: str, file_location:
                 build_bbox_for_img(filename, path_to_dataset, path_to_labels)
 
     file_cursor.close()
+
+    # For single IMG Processing: 
     # build_bbox_for_img("fire_image0003.jpg", path_to_dataset, path_to_labels)
 
-# Extra : GPU Monitoring
+
+# ---------------------------------
+# ---------------------------------
+
+# GPU MONITORING
+
 def monitoring_gpu_usage():
     """Verify that my NVIDIA GPU is available and used to process efficiently my function"""
     # Check if CUDA is available
@@ -353,7 +406,13 @@ def monitoring_gpu_usage():
             # to the GPU using the framework's commands (e.g., model.to('cuda') in PyTorch).
 
 
-# RUN (Confidence Treshold from output of Sieve/Yolov8 can be adjusted to have a more precise results)
-create_bounding_boxes("training")
-create_bounding_boxes("validation")
-# monitoring_gpu_usage()
+# ---------------------------------
+# ---------------------------------
+
+# RUN 
+# (Confidence Treshold from output of Sieve/Yolov8 can be adjusted to have a more precise results)
+
+# create_bounding_boxes("training")
+# create_bounding_boxes("validation")
+monitoring_gpu_usage()
+
