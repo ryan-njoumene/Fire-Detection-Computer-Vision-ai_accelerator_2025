@@ -5,7 +5,7 @@
 
 # Path to the dataset configuration file (e.g., coco8.yaml). 
 # This file contains paths to training and validation data, class names, and number of classes.
-DATA = "Fire-Detection-Computer-Vision-ai_accelerator_2025/config_model/aider128.yaml"
+DATA = "./data_config/aider128.yaml"
 
 # Enables validation during training, allowing for periodic evaluation of model performance on a separate dataset.
 # NO NEED TO RUN .val() AFTERWARD BECAUSE IT IS ALREADY DONE DURING TRAINING BETWEEN EACH EPOCH
@@ -18,8 +18,8 @@ VAL = True #default=true
 # Allows for organized storage of different experiments.
 project_size = {"Nano": "n", "Large": "L"}
 bbox_Confidance_Threshold = {"None": "cfNone", "50%": "cf50"}
-augmented = {"true": "A"}
-PROJECT = f"aider128{project_size["Nano"]}_{augmented["true"]}{bbox_Confidance_Threshold["None"]}"
+augmented = {"true": "A", "false": ""}
+PROJECT = f"aider128{project_size["Nano"]}_{augmented["false"]}{bbox_Confidance_Threshold["None"]}"
 
 # If True, allows overwriting of an existing project/name directory.
 # Useful for iterative experimentation without needing to manually clear previous outputs.
