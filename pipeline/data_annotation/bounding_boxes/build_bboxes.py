@@ -147,8 +147,8 @@ def get_object_bbox(image: sieve.File, object_name: str):
 # Sieve Function and Metadata
 
 def get_readme():
-    """Change the path of the file according to if the code is RUN_BY_COMMAND """
-    if RUN_BY_COMMAND is True:
+    """Change the path of the file according to if the code is RUN_BY_TERMINAL_COMMAND """
+    if RUN_BY_TERMINAL_COMMAND is True:
         readme= open("README.md", encoding="utf-8").read()
     else:
         readme= open(f"{WORKING_DIR_PATH}README.md", encoding="utf-8").read()

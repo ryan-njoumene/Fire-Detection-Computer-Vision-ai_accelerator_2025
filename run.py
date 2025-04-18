@@ -3,11 +3,12 @@ from ultralytics import YOLO
 import torch, torchvision
 import comet_ml
 from ultralytics.utils.callbacks.base import add_integration_callbacks
-from ultralytics.engine.trainer import BaseTrainer
+from ultralytics.models.yolo.detect import DetectionTrainer, DetectionPredictor
 import torch
 import cv2
 import numpy as np
 import yaml
+from multiprocessing import freeze_support  # Import freeze_support
 # from comet_ml.integration.pytorch import log_model
 import os
 # pip install ultralytics
@@ -18,7 +19,7 @@ import os
 # ---------------------------------
 
 # TRAINNING SETTINGS FOR MODEL
-from trainning_settings import DATA, VAL, PROJECT, EXIST_OK, NAME, PLOTS, PROFILE, EPOCHS, PATIENCE, BATCH_SIZE, IMGSZ, CACHE, WORKERS, SAVE, SAVE_PERIOD, OPTIMIZER, COS_LR, SINGLE_CLS, FOCUS_CLASSES
+from trainning_settings import DATA, VAL, PROJECT, EXIST_OK, NAME, PLOTS, PROFILE, EPOCHS, PATIENCE, BATCH_SIZE, IMGSZ, CACHE, AMP, WORKERS, SAVE, SAVE_PERIOD, OPTIMIZER, COS_LR, SINGLE_CLS, FOCUS_CLASSES
 from utilities import monitoring_gpu_usage, MAGENTA_FONT, RED_FONT, BLUE_FONT, RESET_COLOR, CLASSES_TO_DETECT
 
 # set GPU as processing Unit for Running our Model
@@ -35,10 +36,10 @@ os.environ["COMET_PROJECT_NAME"] = "Fire_Detection_aider128_AI_Accelerator_2025"
 os.environ["COMET_WORKSPACE"] = "ryan-njoumene"
 
 # Set the Logging Process of our AI processing to COMET
-# try:
-#     comet_ml.login(project_name=project_name)
-# except:
-#     print(f"\n{RED_FONT}----< Invalid Connexion to your COMET Account. Verify your Credidentials >----{RESET_COLOR}")
+try:
+    comet_ml.login(project_name=os.environ["COMET_PROJECT_NAME"])
+except:
+    print(f"\n{RED_FONT}----< Invalid Connexion to your COMET Account. Verify your Credidentials >----{RESET_COLOR}")
 # is_Connection_to_COMET_Valid = True
 # try:
 #     experiment = comet_ml.Experiment(
@@ -154,48 +155,59 @@ os.environ["COMET_WORKSPACE"] = "ryan-njoumene"
 # LOAD YOLO MODEL
 # Specifies the model file for training. Accepts a path to either a .pt pretrained model or a .yaml configuration file. 
 
-# model = YOLO("yolo11n.yaml")  # build a new model from YAML
-# model = YOLO("yolo11n.yaml").load("yolo11n.pt")  # build from YAML and transfer weights
-model = YOLO("yolo11n.pt")  # load a pretrained model (recommended for training)
 
-print(f"\n{MAGENTA_FONT}----< YOLO11n Model Informations >----{RESET_COLOR}")
-model.info()
+if __name__ == '__main__':
+    freeze_support()  # Call freeze_support() if your script might be frozen
+    # model = YOLO("yolo11n.yaml")  # build a new model from YAML
+    # model = YOLO("yolo11n.yaml").load("yolo11n.pt")  # build from YAML and transfer weights
+    model = YOLO("yolo11n.pt")  # load a pretrained model (recommended for training)
 
-# Use GPU acceleration
-model.to(DEVICE)
-print(f"YOLO11n Model : run with {model.device}")
+    print(f"\n{MAGENTA_FONT}----< YOLO11n Model Informations >----{RESET_COLOR}")
+    model.info()
 
-# ---------------------------------
-# ---------------------------------
+    # Use GPU acceleration
+    model.to(DEVICE)
+    print(f"YOLO11n Model : run with {model.device}")
 
-# TRAINING PHASE & VALIDATION PHASE
+    # ---------------------------------
+    # ---------------------------------
 
-# See Explanations of Settings in trainning_settings.py
-# if is_Connection_to_COMET_Valid == True:
-print(f"{BLUE_FONT}\n\nSTART\n{RESET_COLOR}")
-trainnings_settings = dict(data=DATA,
-                    val=VAL, 
-                    project=PROJECT, 
-                    exist_ok=EXIST_OK, 
-                    name=NAME, 
-                    plots=PLOTS, 
-                    profile=PROFILE, 
-                    epochs=EPOCHS, 
-                    patience=PATIENCE, 
-                    batch=BATCH_SIZE, 
-                    imgsz=IMGSZ, 
-                    cache=CACHE,
-                    workers=WORKERS,
-                    save=SAVE,
-                    save_period = SAVE_PERIOD,
-                    optimizer=OPTIMIZER,
-                    cos_lr=COS_LR,
-                    single_cls=SINGLE_CLS,
-                    classes=FOCUS_CLASSES)
-trainer = BaseTrainer(overrides=trainnings_settings)
-add_integration_callbacks(trainer)
-# trainer.train()
+    # TRAINING PHASE & VALIDATION PHASE
 
+    # See Explanations of Settings in trainning_settings.py
+    # if is_Connection_to_COMET_Valid == True:
+    print(f"{BLUE_FONT}\n\nSTART >>>\n{RESET_COLOR}")
+    print(f"T\nype of 'model' variable: {type(model)}")
+
+    trainnings_settings = dict(data="./data_config/aider128.yaml",
+                        device=DEVICE,
+                        val=VAL, 
+                        project=PROJECT, 
+                        exist_ok=EXIST_OK, 
+                        name=NAME, 
+                        plots=PLOTS, 
+                        profile=PROFILE, 
+                        epochs=EPOCHS, 
+                        patience=PATIENCE, 
+                        batch=BATCH_SIZE, 
+                        imgsz=IMGSZ, 
+                        cache=CACHE,
+                        amp=AMP,
+                        workers=WORKERS,
+                        save=SAVE,
+                        save_period = SAVE_PERIOD,
+                        optimizer=OPTIMIZER,
+                        cos_lr=COS_LR,
+                        single_cls=SINGLE_CLS,
+                        classes=FOCUS_CLASSES
+                        # model=model
+                        )
+
+    # Instantiate the DetectionTrainer, passing the loaded model
+    # trainer = DetectionTrainer(cfg=model, overrides=trainnings_settings)
+    # add_integration_callbacks(trainer)
+    # trainer.train()
+    model.train(**trainnings_settings)
     # results = model.train(data=DATA,
     #                     val=VAL, 
     #                     project=PROJECT, 
@@ -223,7 +235,7 @@ add_integration_callbacks(trainer)
 # else:
 #     print(f"\n{RED_FONT}----< CANNOT CONNECT TO COMET: LOGGING DATA IS IMPOSSIBLE >----{RESET_COLOR}")
 
-print(f"{BLUE_FONT}\n\nEND{RESET_COLOR}")
+print(f"{BLUE_FONT}\n\nEND >>>{RESET_COLOR}")
 
 # ---------------------------------
 # ---------------------------------

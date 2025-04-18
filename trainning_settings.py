@@ -38,14 +38,14 @@ PLOTS = True #default=False
 
 # It will export your trained PyTorch model to the ONNX format (+ TensorRT if available on computer)
 # ONNX is an open standard for representing machine learning models, allowing them to be run across various frameworks and hardware.
-PROFILE = True #default=False
+PROFILE = False #default=False
 
 # ---------------------------------
 # ---------------------------------
 
 # Total number of training epochs. Each epoch represents a full pass over the entire dataset.
 # Adjusting this value can affect training duration and model performance.
-EPOCHS = 10 #default=100
+EPOCHS = 100 #default=100
 
 # Maximum training time in hours. If set, this overrides the epochs argument,
 # allowing training to automatically stop after the specified duration.
@@ -53,7 +53,7 @@ EPOCHS = 10 #default=100
 
 # Number of epochs to wait without improvement in validation metrics before early stopping the training.
 # Helps prevent overfitting by stopping training when performance plateaus.
-PATIENCE = 10 #default=100
+PATIENCE = 100 #default=100
 
 # Number of Images processed simultaneously in a forward pass 
 # (data transmitted through layers of the neural network in one instance)
@@ -77,6 +77,10 @@ CACHE = True #default=false
 # Number of worker threads for data loading.
 # Influences the speed of data preprocessing and feeding into the model, especially useful in multi-GPU setups.
 WORKERS = 8 #default=8
+
+# Enables automatic Mixed Precision (AMP) training, reducing memory usage and possibly speeding up training
+# with minimal impact on accuracy
+AMP = True #default=true
 
 # ---------------------------------
 # ---------------------------------
