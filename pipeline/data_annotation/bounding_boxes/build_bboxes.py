@@ -128,8 +128,8 @@ def get_object_bbox(image: sieve.File, object_name: str):
         file=sieve.File(path=image.path),
         classes=object_name,
         models='yolov8l-world',
+        confidence_threshold = 0.50
 
-        # ****** confidence_threshold = 0.50 ******
         # The confidence_threshold acts as a filter.
         # Only bounding boxes with a confidence score equal to or greater than this threshold will
         # be considered valid detections and will be outputted by the model.
@@ -413,7 +413,7 @@ def monitoring_gpu_usage():
 # RUN 
 # (Confidence Treshold from output of Sieve/Yolov8 can be adjusted to have a more precise results)
 
-# create_bounding_boxes("training")
-# create_bounding_boxes("validation")
-monitoring_gpu_usage()
+create_bounding_boxes("training")
+create_bounding_boxes("validation")
+# monitoring_gpu_usage()
 
