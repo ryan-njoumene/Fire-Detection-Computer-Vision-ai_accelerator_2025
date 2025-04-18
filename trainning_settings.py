@@ -1,5 +1,8 @@
 
 # MODEL SETTINGS
+
+# path to Ultralytics settings during trainnings
+# C:\Users\ryann\AppData\Roaming\Ultralytics\settings.json
 # ---------------------------------
 # ---------------------------------
 
