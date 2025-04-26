@@ -38,6 +38,7 @@ st.markdown(
     
     ***by [Ryan Njoumene](https://www.linkedin.com/in/ryan-njoumene-506a55345/), [Meriam Laabou](https://www.linkedin.com/in/meriam-ld-23b6962a4), [Edwin Kintu](https://www.linkedin.com/in/edwin-kintu-323926301/)***  
 
+    ![alt text](https://www.dawsoncollege.qc.ca/ai/wp-content/uploads/sites/180/Website-Banner_AI-Accelerator-Programs-Website-800x450.jpg)
 
     ## Problem Definition
     Every year, with the effect of the Climate Change that keep on ramping up,
@@ -50,6 +51,8 @@ st.markdown(
     people in distress and in the worse case their corpses in hazarduous natural environment caused by Natural and Human made Disasters.
     Because in those situations, every second can be a life saved.
 
+    ![alt text](https://cdn.redcross.ca/prodmedia/crc/azure/volunteer/220118vr-vr-portal-emergencydisasters-banner.jpg?ext=.jpg)
+
     ### Revised Objective (Scoped Down)
     After a more through consideration, we decided to scope down our project to something simpler and less computationally
     intensive task to respect our time constraint and the feasibility of the project while taking in account our novice experience
@@ -60,6 +63,8 @@ st.markdown(
     This current year, after having observed a resurgence of Wildfire brought to light be the mediatisation of the 2025 Los Angeles's Wildfire
     in the U.S.A, we where put face to face with today's reality. Wildfires aren't a thing that only happens in developing country or
     in far away regions. They knock at our doorsteps and threaten to burn our homes.
+
+    ![alt text](https://www.8newsnow.com/wp-content/uploads/sites/59/2025/01/HRecovery-1920x1080-copy.jpg?w=900)
 
     Thus, we felt that building a AI tool specialized in detecting the occurence of a fire (including smoke) could shine in our current
     time by detecting any sign of fire and alerting the related Fire Departement Authorities. This kind of tool could allow them to use drones
