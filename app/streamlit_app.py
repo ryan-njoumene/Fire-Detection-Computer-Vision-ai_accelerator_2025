@@ -113,7 +113,19 @@ st.markdown(
 
 st.markdown("## Demo")
 
-source = "fire_image0111.jpg"
+if 'image_number' not in st.session_state:
+    st.session_state['image_number'] = 111
+
+formatted_number = str(st.session_state['image_number']).zfill(4)
+def nextImg():
+    """Increment the current test image to the next"""
+    nums = st.session_state['image_number']
+    if nums > 101 and nums < 128:
+        st.session_state['image_number'] = nums + 1
+    else:
+        st.session_state['image_number'] = 101
+
+source = f"../datasets/aider128/images/test/fire_image{formatted_number}.jpg"
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
 if 'is_upload' not in st.session_state:
@@ -129,6 +141,8 @@ else:
     if st.session_state['is_upload'] == True:
         st.session_state['detection_result'] = image
         st.session_state['is_new_upload'] = False
+    st.caption(f"Select image from Testing Dataset: `current img = {formatted_number}`")
+    st.button("Next Image", on_click=nextImg())
 
 
 if 'detection_result' not in st.session_state:
@@ -246,5 +260,16 @@ st.markdown(
     An interesting approach to the vision dataset. Adding future considerations goes well with the potential of the approach you provided. 
     Your demo very nicely provides a full overview of the problem. Well done! Please share a link if possible in the chat. 
     Great work overall! Thank you! --[Aditi Maheshwari](https://www.linkedin.com/in/aditi-maheshwari)*
+
+    ### Ethical Feedback: 
+
+    >Wow, if Team 16 & Team 1 joined forces wildfire emergency response would be god-tier! 
+    I really liked the way you presented your problem, walked through your model and specifically talked through
+    some of your challenges during development  
+    Similar to feedback for Team 1, consider the link between the high emissions of AI models and the environmental
+    outcomes of increased wildfires — if deployed in real-world consider how your system can be adapted to lower-emissions infrastructure. 
+    I’m interested in the way your model performs on images with a lot of smoke, could this be leveraged in some way?
+    Do smokier conditions correspond with areas where the wildfire is spreading or where the wildfire has been diminished? Could your ...  
+    --[Reshem Khan](linkedin.com/in/reshem-khan-60786a116)
     """
 )
