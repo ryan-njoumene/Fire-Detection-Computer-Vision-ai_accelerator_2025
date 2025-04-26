@@ -57,7 +57,7 @@ trainings_settings = dict(
                 epochs=EPOCHS, 
                 patience=PATIENCE, 
                 batch=BATCH_SIZE, 
-                imgsz=IMGSZ, 
+                # imgsz=IMGSZ, 
                 cache=CACHE,
                 amp=AMP,
                 workers=WORKERS,
@@ -106,114 +106,7 @@ try:
     comet_ml.login(project_name=os.environ["COMET_PROJECT_NAME"])
 except:
     print(f"\n{RED_FONT}----< Invalid Connexion to your COMET Account. Verify your Credidentials >----{RESET_COLOR}")
-# is_Connection_to_COMET_Valid = True
-# try:
-#     experiment = comet_ml.Experiment(
-#         api_key=comet_api,
-#         project_name=project_name,
-#         workspace=workspace,
-#         log_system_details=True,  # Ensure system details logging is enabled
-#         log_env_gpu=True,        # Specifically enable GPU metrics
-#         log_env_cpu=True,        # Specifically enable CPU metrics
-#         log_env_host=True,       # Optional: Log host information
-#     )
 
-#     # You can also log hyperparameters before training starts
-#     focus = None
-#     if FOCUS_CLASSES is None: 
-#         focus = CLASSES_TO_DETECT
-#     hyperparameters = {
-#         "model": "yolov11n",
-#         "name": NAME,
-#         "augmentation" : False,
-#         "epochs": EPOCHS,
-#         "patience": PATIENCE,
-#         "batch_size": BATCH_SIZE,
-#         "image_size": IMGSZ,
-#         "learning_rate": 0.01, #YOLO default
-#         "optimizer": OPTIMIZER,
-#         "cosine_learning_rate": COS_LR, 
-#         "single_class": SINGLE_CLS, 
-#         "focus_classes" : focus,
-#         "workers": WORKERS
-#     }
-#     experiment.log_parameters(hyperparameters)
-
-#     # If you are using a data configuration file (e.g., coco128.yaml), log its name
-#     data_config = "data_config/aider128.yaml"
-#     experiment.log_parameter("data_config", data_config)
-
-# # Handdle Errors Gracefully
-# except Exception as e:
-#     print(f"\n{RED_FONT}----< Invalid Connexion to your COMET Account. Verify your Credidentials >----{RESET_COLOR}")
-#     print(f"{RED_FONT}{e}{RESET_COLOR}")
-#     is_Connection_to_COMET_Valid = False
-
-# # Get training data path from your config
-# with open(data_config, 'r') as f:
-#     import yaml
-#     data_info = yaml.safe_load(f)
-#     train_path = data_info.get('train')
-#     val_path = data_info.get('val')
-#     if train_path:
-#         experiment.log_parameter("train_data_path", train_path)
-#     if val_path:
-#         experiment.log_parameter("val_data_path", val_path)
-
-
-# ---------------------------------
-# ---------------------------------
-
-# LOGGING DATA AND TRAINING METRIC OF THE MODEL WITH COMET_ML
-
-# class CometCallback(BaseTrainer):
-#     def on_fit_start(self, trainer):
-#         self.experiment = trainer.opt.comet_experiment  # Access the Comet experiment
-
-#     def on_train_epoch_end(self, trainer):
-#         epoch = trainer.epoch
-#         metrics = trainer.label_loss, trainer.box_loss, trainer.obj_loss, trainer.cls_loss, trainer.l1_loss, trainer.loss
-#         names = ['train/label_loss', 'train/box_loss', 'train/obj_loss', 'train/cls_loss', 'train/l1_loss', 'train/loss']
-#         for name, value in zip(names, metrics):
-#             self.experiment.log_metric(name, value, step=epoch)
-
-#         # Log learning rate
-#         lr = trainer.lr[0] if isinstance(trainer.lr, list) else trainer.lr
-#         self.experiment.log_metric("learning_rate", lr, step=epoch)
-
-#     def on_val_end(self, trainer):
-#         epoch = trainer.epoch
-#         metrics = trainer.metrics  # Contains validation metrics like mAP, precision, recall
-#         if metrics:
-#             self.experiment.log_metric("val/precision", metrics.precision.item(), step=epoch)
-#             self.experiment.log_metric("val/recall", metrics.recall.item(), step=epoch)
-#             self.experiment.log_metric("val/mAP50", metrics.map50.item(), step=epoch)
-#             self.experiment.log_metric("val/mAP50-95", metrics.map.item(), step=epoch)
-
-#         # Log validation predictions (example for the last validation batch)
-#         if trainer.validator.pred and trainer.validator.imgs:
-#             for i, (im_file, pred) in enumerate(zip(trainer.validator.im_files, trainer.validator.pred)):
-#                 if i < 5:  # Log a few example images
-#                     orig_img = cv2.imread(im_file)
-#                     det_img = trainer.validator.plot_bboxes(pred.cpu().numpy(), orig_img.copy(), names=trainer.model.names)
-#                     experiment.log_image(det_img, name=f"val_prediction_epoch_{trainer.epoch}_image_{i}")
-    
-#     # Seamlessly log your Pytorch model
-#     def on_train_end(self, trainer):
-#         # Log the trained model weights
-#         experiment.log_model(f"yolov11n_{PROJECT}_epoch_{trainer.epoch}.pt", trainer.best)
-#         experiment.end()
-
-# # Initialize Comet experiment and pass it to the trainer's opt
-# try:
-#     opt_override = {
-#         'comet_experiment': experiment  # Use the initialized experiment object
-#     }
-# # Handdle Errors Gracefully
-# except Exception as e:
-#     print(f"\n{RED_FONT}----< Invalid Connexion to your COMET Account. Verify your Credidentials >----{RESET_COLOR}")
-#     print(f"{RED_FONT}{e}{RESET_COLOR}")
-#     is_Connection_to_COMET_Valid = False
 
 # ---------------------------------
 # ---------------------------------
@@ -225,8 +118,8 @@ if __name__ == '__main__':
     freeze_support()  # Call freeze_support() if your script might be frozen
     # model = YOLO("yolo11n.yaml")  # build a new model from YAML
     # model = YOLO("yolo11n.yaml").load("yolo11n.pt")  # build from YAML and transfer weights
-    # model = YOLO("yolo11n.pt")  # load a pretrained model (recommended for training)
-    model = YOLO("best.pt")  # load a pretrained model (recommended for training)
+    model = YOLO("yolo11n.pt")  # load a pretrained model (recommended for training)
+    # model = YOLO("best.pt")  # load a pretrained model (recommended for training)
 
     print(f"\n{MAGENTA_FONT}----< YOLO11n Model Informations >----{RESET_COLOR}")
     model.info()
@@ -236,23 +129,18 @@ if __name__ == '__main__':
     print(f"YOLO11n Model : run with {model.device}")
 
     # Model Settings
-    # settings = trainings_settings | augmentation_settings
+    # See Explanations of Settings in trainning_settings.py
+    settings = trainings_settings | augmentation_settings
 
     # ---------------------------------
     # ---------------------------------
 
     # TRAINING PHASE & VALIDATION PHASE
 
-    # See Explanations of Settings in trainning_settings.py
-    # if is_Connection_to_COMET_Valid == True:
-    print(f"{BLUE_FONT}\n\nSTART >>>\n{RESET_COLOR}")
-    print(f"T\nype of 'model' variable: {type(model)}")
 
-    # Instantiate the DetectionTrainer, passing the loaded model
-    # trainer = DetectionTrainer(cfg=model, overrides=trainnings_settings)
-    # add_integration_callbacks(trainer)
-    # trainer.train()
-    # model.train(**settings)
+    print(f"{BLUE_FONT}\n\nSTART >>>\n{RESET_COLOR}")
+    print(f"\nType of 'model' variable: {type(model)}")
+    model.train(**settings)
 
     # Resume Interrupted  training
     # results = model.train(resume=True)
@@ -270,13 +158,14 @@ print(f"{BLUE_FONT}\n\nEND >>>{RESET_COLOR}")
 # source = './datasets/aider128/images/test'
 
 # Test the model
-print(f"{MAGENTA_FONT}\n\nTESTING PHASE >>>\n{RESET_COLOR}")
-results = model.predict(source="./datasets/aider128/images/test", visualize=True, augment=True, agnostic_nms=True)
+def Testing():
+    print(f"{MAGENTA_FONT}\n\nTESTING PHASE >>>\n{RESET_COLOR}")
+    results = model.predict(source="./datasets/aider128/images/test", visualize=True, augment=True, agnostic_nms=True)
 
-# Visualize the results
-print(f"{MAGENTA_FONT}\n\nVISUALIZATION PHASE >>>\n{RESET_COLOR}")
-# print("\n\nVisualization Phase...")
-for result in results:
-    result.show()
+    # Visualize the results
+    print(f"{MAGENTA_FONT}\n\nVISUALIZATION PHASE >>>\n{RESET_COLOR}")
+    # print("\n\nVisualization Phase...")
+    for result in results:
+        result.show()
 
-print(f"{MAGENTA_FONT}\n\nEND >>>\n{RESET_COLOR}")
+    print(f"{MAGENTA_FONT}\n\nEND >>>\n{RESET_COLOR}")

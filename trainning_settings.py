@@ -22,14 +22,14 @@ VAL = True #default=true
 project_size = {"Nano": "n", "Large": "L"}
 bbox_Confidance_Threshold = {"None": "cfNone", "50%": "cf50"}
 augmented = {"true": "Aug", "false": ""}
-PROJECT = f"aider128{project_size["Nano"]}_{augmented["false"]}{bbox_Confidance_Threshold["50%"]}"
+PROJECT = f"aider128{project_size["Nano"]}_{augmented["true"]}{bbox_Confidance_Threshold["50%"]}"
 
 # If True, allows overwriting of an existing project/name directory.
 # Useful for iterative experimentation without needing to manually clear previous outputs.
 EXIST_OK = False #default=false
 
 # Name of the training run. Used for creating a subdirectory within the project folder, where training logs and outputs are stored.
-experiment_numbers = 2
+experiment_numbers = 3
 NAME = f"aider128_run{experiment_numbers}"
 
 # ---------------------------------
@@ -48,7 +48,7 @@ PROFILE = False #default=False
 
 # Total number of training epochs. Each epoch represents a full pass over the entire dataset.
 # Adjusting this value can affect training duration and model performance.
-EPOCHS = 100 #default=100
+EPOCHS = 10 #default=100
 
 # Maximum training time in hours. If set, this overrides the epochs argument,
 # allowing training to automatically stop after the specified duration.
