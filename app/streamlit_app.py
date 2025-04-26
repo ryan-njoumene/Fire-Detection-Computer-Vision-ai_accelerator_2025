@@ -21,10 +21,6 @@ import streamlit as st
 # ---------------------------------
 # ---------------------------------
 
-import sys
-import pandas as pd
-import numpy as np
-import cv2
 from PIL import Image
 from io import StringIO
 import torch
