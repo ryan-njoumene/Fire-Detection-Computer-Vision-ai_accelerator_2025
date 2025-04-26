@@ -21,7 +21,7 @@ VAL = True #default=true
 # Allows for organized storage of different experiments.
 project_size = {"Nano": "n", "Large": "L"}
 bbox_Confidance_Threshold = {"None": "cfNone", "50%": "cf50"}
-augmented = {"true": "A", "false": ""}
+augmented = {"true": "Aug", "false": ""}
 PROJECT = f"aider128{project_size["Nano"]}_{augmented["false"]}{bbox_Confidance_Threshold["50%"]}"
 
 # If True, allows overwriting of an existing project/name directory.

@@ -1,29 +1,95 @@
-"""Import YOLOv11 model"""
-from ultralytics import YOLO
-import torch, torchvision
+"""Import Essentials Libraries"""
+import os
+from multiprocessing import freeze_support  # Import freeze_support
+import cv2
+import yaml
 import comet_ml
+import numpy as np
+import torch, torchvision
+
+"""Import YOLOv11 model and its utilities functions"""
+from ultralytics import YOLO
 from ultralytics.utils.callbacks.base import add_integration_callbacks
 from ultralytics.models.yolo.detect import DetectionTrainer, DetectionPredictor
-import torch
-import cv2
-import numpy as np
-import yaml
-from multiprocessing import freeze_support  # Import freeze_support
-# from comet_ml.integration.pytorch import log_model
-import os
-# pip install ultralytics
+
+"""Import Utilities Functions"""
+from utilities import monitoring_gpu_usage, MAGENTA_FONT, RED_FONT, BLUE_FONT, RESET_COLOR, CLASSES_TO_DETECT
+
+"""Import Model Training Setting"""
+from trainning_settings import DATA, VAL, PROJECT, EXIST_OK, NAME, PLOTS, PROFILE, EPOCHS, PATIENCE, BATCH_SIZE, IMGSZ, CACHE, AMP, WORKERS, SAVE, SAVE_PERIOD, OPTIMIZER, COS_LR, SINGLE_CLS, FOCUS_CLASSES
+
+"""Import Model Augmentation Setting"""
+from augmentation_settings import HUE_ADJUSTMENT, SATURATION_ADJUSTMENT, BRIGHTNESS_ADJUSTMENT, GEOMETRIC_TRANSFORMATION, GEOMETRIC_TRANSLATION, SCALE, SHEAR, PERSPECTIVE, FLIP_UPDOWN, FLIP_LEFTRIGHT, BGR_CHANNEL_SWAP, MOSAIC, MIXUP
+
+
+# ---------------------------------
+# ---------------------------------
+
+# PACKAGES TO DOWNLOAD
+
 # pip install comet_ml
+# pip install ultralytics
+# from comet_ml.integration.pytorch import log_model
 # pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
 
 # ---------------------------------
 # ---------------------------------
 
-# TRAINNING SETTINGS FOR MODEL
-from trainning_settings import DATA, VAL, PROJECT, EXIST_OK, NAME, PLOTS, PROFILE, EPOCHS, PATIENCE, BATCH_SIZE, IMGSZ, CACHE, AMP, WORKERS, SAVE, SAVE_PERIOD, OPTIMIZER, COS_LR, SINGLE_CLS, FOCUS_CLASSES
-from utilities import monitoring_gpu_usage, MAGENTA_FONT, RED_FONT, BLUE_FONT, RESET_COLOR, CLASSES_TO_DETECT
+# GPU ACCELERATION SETTINGS
 
 # set GPU as processing Unit for Running our Model
 DEVICE = monitoring_gpu_usage()
+
+# ---------------------------------
+# ---------------------------------
+
+# TRAINING SETTINGS FOR MODEL
+
+trainings_settings = dict(
+                data=DATA,
+                device=DEVICE,
+                val=VAL, 
+                project=PROJECT, 
+                exist_ok=EXIST_OK, 
+                name=NAME, 
+                plots=PLOTS, 
+                profile=PROFILE, 
+                epochs=EPOCHS, 
+                patience=PATIENCE, 
+                batch=BATCH_SIZE, 
+                imgsz=IMGSZ, 
+                cache=CACHE,
+                amp=AMP,
+                workers=WORKERS,
+                save=SAVE,
+                save_period = SAVE_PERIOD,
+                optimizer=OPTIMIZER,
+                cos_lr=COS_LR,
+                single_cls=SINGLE_CLS,
+                classes=FOCUS_CLASSES
+                # model=model
+                )
+
+# ---------------------------------
+# ---------------------------------
+
+# AUGMENTATION SETTINGS FOR MODEL
+
+augmentation_settings = dict(
+                    hsv_h=HUE_ADJUSTMENT, 
+                    hsv_s=SATURATION_ADJUSTMENT,
+                    hsv_v=BRIGHTNESS_ADJUSTMENT,
+                    degrees=GEOMETRIC_TRANSFORMATION,
+                    translate=GEOMETRIC_TRANSLATION,
+                    scale=SCALE,
+                    shear=SHEAR,
+                    perspective=PERSPECTIVE,
+                    flipud=FLIP_UPDOWN,
+                    fliplr=FLIP_LEFTRIGHT,
+                    bgr=BGR_CHANNEL_SWAP,
+                    mosaic=MOSAIC,
+                    mixup=MIXUP
+                    )
 
 # ---------------------------------
 # ---------------------------------
@@ -155,12 +221,12 @@ except:
 # LOAD YOLO MODEL
 # Specifies the model file for training. Accepts a path to either a .pt pretrained model or a .yaml configuration file. 
 
-
 if __name__ == '__main__':
     freeze_support()  # Call freeze_support() if your script might be frozen
     # model = YOLO("yolo11n.yaml")  # build a new model from YAML
     # model = YOLO("yolo11n.yaml").load("yolo11n.pt")  # build from YAML and transfer weights
-    model = YOLO("yolo11n.pt")  # load a pretrained model (recommended for training)
+    # model = YOLO("yolo11n.pt")  # load a pretrained model (recommended for training)
+    model = YOLO("best.pt")  # load a pretrained model (recommended for training)
 
     print(f"\n{MAGENTA_FONT}----< YOLO11n Model Informations >----{RESET_COLOR}")
     model.info()
@@ -168,6 +234,9 @@ if __name__ == '__main__':
     # Use GPU acceleration
     model.to(DEVICE)
     print(f"YOLO11n Model : run with {model.device}")
+
+    # Model Settings
+    # settings = trainings_settings | augmentation_settings
 
     # ---------------------------------
     # ---------------------------------
@@ -179,56 +248,11 @@ if __name__ == '__main__':
     print(f"{BLUE_FONT}\n\nSTART >>>\n{RESET_COLOR}")
     print(f"T\nype of 'model' variable: {type(model)}")
 
-    trainnings_settings = dict(data="./data_config/aider128.yaml",
-                        device=DEVICE,
-                        val=VAL, 
-                        project=PROJECT, 
-                        exist_ok=EXIST_OK, 
-                        name=NAME, 
-                        plots=PLOTS, 
-                        profile=PROFILE, 
-                        epochs=EPOCHS, 
-                        patience=PATIENCE, 
-                        batch=BATCH_SIZE, 
-                        imgsz=IMGSZ, 
-                        cache=CACHE,
-                        amp=AMP,
-                        workers=WORKERS,
-                        save=SAVE,
-                        save_period = SAVE_PERIOD,
-                        optimizer=OPTIMIZER,
-                        cos_lr=COS_LR,
-                        single_cls=SINGLE_CLS,
-                        classes=FOCUS_CLASSES
-                        # model=model
-                        )
-
     # Instantiate the DetectionTrainer, passing the loaded model
     # trainer = DetectionTrainer(cfg=model, overrides=trainnings_settings)
     # add_integration_callbacks(trainer)
     # trainer.train()
-    model.train(**trainnings_settings)
-    # results = model.train(data=DATA,
-    #                     val=VAL, 
-    #                     project=PROJECT, 
-    #                     exist_ok=EXIST_OK, 
-    #                     name=NAME, 
-    #                     plots=PLOTS, 
-    #                     profile=PROFILE, 
-    #                     epochs=EPOCHS, 
-    #                     patience=PATIENCE, 
-    #                     batch=BATCH_SIZE, 
-    #                     imgsz=IMGSZ, 
-    #                     cache=CACHE,
-    #                     workers=WORKERS,
-    #                     save=SAVE,
-    #                     save_period = SAVE_PERIOD,
-    #                     optimizer=OPTIMIZER,
-    #                     cos_lr=COS_LR,
-    #                     single_cls=SINGLE_CLS,
-    #                     classes=FOCUS_CLASSES,
-    #                     callbacks=[CometCallback()], 
-    #                     **opt_override)
+    # model.train(**settings)
 
     # Resume Interrupted  training
     # results = model.train(resume=True)
@@ -246,17 +270,13 @@ print(f"{BLUE_FONT}\n\nEND >>>{RESET_COLOR}")
 # source = './datasets/aider128/images/test'
 
 # Test the model
-# results = model.predict(source=source)
+print(f"{MAGENTA_FONT}\n\nTESTING PHASE >>>\n{RESET_COLOR}")
+results = model.predict(source="./datasets/aider128/images/test", visualize=True, augment=True, agnostic_nms=True)
 
 # Visualize the results
+print(f"{MAGENTA_FONT}\n\nVISUALIZATION PHASE >>>\n{RESET_COLOR}")
 # print("\n\nVisualization Phase...")
-# for result in results:
-#     result.show()
+for result in results:
+    result.show()
 
-
-# Testing Visual Representation with MaPlotLib
-# from PIL import Image
-# import matplotlib.pyplot as plt
-# image = Image.open('Fire-Detection-Computer-Vision-ai_accelerator_2025/datasets/aider128/images/train/fire_image0001.jpg')
-# plt.imshow(image)
-# plt.show()
+print(f"{MAGENTA_FONT}\n\nEND >>>\n{RESET_COLOR}")
