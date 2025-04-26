@@ -241,7 +241,7 @@ if visualize or verbose:
 
 st.markdown(
     """
-    ## Review Given by one of the Event Manager of the AI Accelerator Program
+    ## Review Given by the *AI Launch Lab Team* of the AI Accelerator Program
     >*A very real problem as we have seen! I really like that you provide insights about your data and provide a concise presentation of your results. 
     An interesting approach to the vision dataset. Adding future considerations goes well with the potential of the approach you provided. 
     Your demo very nicely provides a full overview of the problem. Well done! Please share a link if possible in the chat. 
