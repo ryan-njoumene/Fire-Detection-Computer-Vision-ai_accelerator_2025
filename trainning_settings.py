@@ -112,7 +112,7 @@ COS_LR = True #default=False
 
 # Treats all classes in multi-class datasets as a single class during training.
 # Useful for binary classification tasks or when focusing on object presence rather than classification.
-SINGLE_CLS = False #default=false
+SINGLE_CLS = True #default=false
 
 # Specifies a list of class IDs to train on. Useful for filtering out and focusing only on certain classes during training.
 FOCUS_CLASSES = None #default=None
