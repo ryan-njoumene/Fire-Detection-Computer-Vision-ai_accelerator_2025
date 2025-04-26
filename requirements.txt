@@ -94,9 +94,6 @@ stringzilla==3.12.5
 sympy==1.13.1
 tenacity==9.1.2
 toml==0.10.2
-torch==2.6.0+cu126
-torchaudio==2.6.0+cu126
-torchvision==0.21.0+cu126
 torch==2.7.0+cpu
 torchaudio==2.7.0+cpu
 torchvision==0.22.0+cpu       
