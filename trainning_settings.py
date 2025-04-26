@@ -48,7 +48,7 @@ PROFILE = False #default=False
 
 # Total number of training epochs. Each epoch represents a full pass over the entire dataset.
 # Adjusting this value can affect training duration and model performance.
-EPOCHS = 10 #default=100
+EPOCHS = 100 #default=100
 
 # Maximum training time in hours. If set, this overrides the epochs argument,
 # allowing training to automatically stop after the specified duration.

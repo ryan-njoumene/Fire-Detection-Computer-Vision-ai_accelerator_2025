@@ -66,7 +66,7 @@ trainings_settings = dict(
                 optimizer=OPTIMIZER,
                 cos_lr=COS_LR,
                 single_cls=SINGLE_CLS,
-                classes=FOCUS_CLASSES
+                # classes=FOCUS_CLASSES
                 # model=model
                 )
 
