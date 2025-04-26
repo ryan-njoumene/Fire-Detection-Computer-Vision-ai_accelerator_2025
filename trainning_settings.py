@@ -48,7 +48,7 @@ PROFILE = False #default=False
 
 # Total number of training epochs. Each epoch represents a full pass over the entire dataset.
 # Adjusting this value can affect training duration and model performance.
-EPOCHS = 100 #default=100
+EPOCHS = 300 #default=100
 
 # Maximum training time in hours. If set, this overrides the epochs argument,
 # allowing training to automatically stop after the specified duration.
@@ -112,7 +112,7 @@ COS_LR = True #default=False
 
 # Treats all classes in multi-class datasets as a single class during training.
 # Useful for binary classification tasks or when focusing on object presence rather than classification.
-SINGLE_CLS = True #default=false
+SINGLE_CLS = False #default=false
 
 # Specifies a list of class IDs to train on. Useful for filtering out and focusing only on certain classes during training.
 FOCUS_CLASSES = None #default=None

@@ -66,7 +66,7 @@ trainings_settings = dict(
                 optimizer=OPTIMIZER,
                 cos_lr=COS_LR,
                 single_cls=SINGLE_CLS,
-                # classes=FOCUS_CLASSES
+                classes=FOCUS_CLASSES
                 # model=model
                 )
 
@@ -160,7 +160,7 @@ print(f"{BLUE_FONT}\n\nEND >>>{RESET_COLOR}")
 # Test the model
 def Testing():
     print(f"{MAGENTA_FONT}\n\nTESTING PHASE >>>\n{RESET_COLOR}")
-    results = model.predict(source="./datasets/aider128/images/test", visualize=True, augment=True, agnostic_nms=True)
+    results = model.predict(source="./datasets/aider128/images/test", visualize=True, augment=True, agnostic_nms=True, save=True, name=f"training_run_{NAME}")
 
     # Visualize the results
     print(f"{MAGENTA_FONT}\n\nVISUALIZATION PHASE >>>\n{RESET_COLOR}")
@@ -169,3 +169,5 @@ def Testing():
         result.show()
 
     print(f"{MAGENTA_FONT}\n\nEND >>>\n{RESET_COLOR}")
+
+# Testing()
