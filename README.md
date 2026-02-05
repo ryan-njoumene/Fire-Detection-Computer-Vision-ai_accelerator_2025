@@ -1,1 +1,1 @@
-# ai_accelerator
+# Fire-Detection-Computer-Vision-ai_accelerator_2025
